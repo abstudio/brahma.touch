@@ -1,0 +1,25 @@
+{
+  "name": "brahma.touch",
+  "version": "0.6.0",
+  "authors": [
+    "Morulus <vladimirmorulus@gmail.com>"
+  ],
+  "description": "Plugin for support touch events",
+  "main": "brahma.touch.js",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "brahmajs",
+    "touch",
+    "plugin",
+    "mobile",
+    "wipe"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/morulus/brahma.overlay",
+  "dependencies": {
+    "brahma": ">=1.0.0"
+  }
+}
