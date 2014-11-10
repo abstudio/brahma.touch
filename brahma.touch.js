@@ -1,67 +1,108 @@
     
 	Brahma.component("touch", {
-		minMoveX: 20,
-		minMoveY: 20,
-		preventDefaultEvents: true
+		config: {
+			minMoveX: 1, // Min X distance to start listen touchmove
+			minMoveY: 1, // Min Y distance to start listen touchmove
+			simpleMoves: false, // Disable listen touchmove after first wipe action
+			preventDefaultEvents: true // Prevent default events
+		},
+		startX: null,
+		isMoving: null,
+		cancelTouch: function() {
+			var component = this;
+			 this.selector[0].removeEventListener('touchmove', function(e) {
+			 	component.onTouchMove(e)
+			 });
+			 this.startX = null;
+			 this.isMoving = false;
+		},
+		onTouchMove : function(e) {
+			
+			var component = this;
+			 if(component.config.preventDefaultEvents) {
+				 e.preventDefault();
+			 }
+
+			 if(this.isMoving) {
+
+			 	 if (component.config.simpleMoves) component.cancelTouch();
+				 var x = e.touches[0].pageX;
+				 var y = e.touches[0].pageY;
+				 var dx = this.startX - x;
+				 var dy = this.startY - y;
+				 if(Math.abs(dx) >= component.config.minMoveX) {
+					
+					if(dx >= 0) {
+						
+						component.trigger('wipeLeft', [{
+							dX: dx,
+							dY: dy
+						}]);
+						
+					}
+					else {
+
+						component.trigger('wipeRight', [{
+							dX: dx,
+							dY: dy
+						}]);
+						
+					}
+
+
+				 }
+				 else if(Math.abs(dy) >= component.config.minMoveY) {
+						
+						if(dy >= 0) {
+							component.trigger('wipeDown',[{
+								dX: dx,
+								dY: dy
+							}]);
+						}
+						else {
+							component.trigger('wipeUp',[{
+								dX: dx,
+								dY: dy
+							}]);
+						}
+				}
+				component.trigger('wipe', [{
+					dX: dx,
+					dY: dy
+				}]);
+			 }
+		},
+		onTouchStart : function(e)
+		{
+			var component = this;
+			
+				this.startX = e.touches[0].pageX;
+				this.startY = e.touches[0].pageY;
+				this.isMoving = true;
+				this.selector[0].addEventListener('touchmove', function(e) {
+
+					component.onTouchMove(e);
+				}, false);
+
+
+			
+		}    	 
+
 	}).execute = function() {
 		var component = this;
 		
-		this.each(function() {
-			 var startX;
-			 var startY;
-			 var isMoving = false;
+		
+		
+		this.selector[0].addEventListener('touchstart', function(e) {
+			e.preventDefault();
+			component.onTouchStart(e);
+		}, false);
+		this.selector[0].addEventListener('touchend', function(e) {
+			component.trigger("throw");
+			e.preventDefault();
+			component.cancelTouch();
+		}, false);
+		
 
-			 function cancelTouch() {
-				 this.removeEventListener('touchmove', onTouchMove);
-				 startX = null;
-				 isMoving = false;
-			 }	
-			 
-			 function onTouchMove(e) {
-				 if(component.config.preventDefaultEvents) {
-					 e.preventDefault();
-				 }
-				 if(isMoving) {
-					 var x = e.touches[0].pageX;
-					 var y = e.touches[0].pageY;
-					 var dx = startX - x;
-					 var dy = startY - y;
-					 if(Math.abs(dx) >= component.config.minMoveX) {
-						cancelTouch();
-						if(dx > 0) {
-							component.trigger('wipeleft');
-							
-						}
-						else {
-							component.trigger('wiperight');
-							
-						}
-					 }
-					 else if(Math.abs(dy) >= component.config.minMoveY) {
-							cancelTouch();
-							if(dy > 0) {
-								component.trigger('wipedown');
-							}
-							else {
-								component.trigger('wipeup');
-							}
-						 }
-				 }
-			 }
-			 
-			 function onTouchStart(e)
-			 {
-				 if (e.touches.length == 1) {
-					 startX = e.touches[0].pageX;
-					 startY = e.touches[0].pageY;
-					 isMoving = true;
-					 this.addEventListener('touchmove', onTouchMove, false);
-				 }
-			 }    	 
-			 if ('ontouchstart' in document.documentElement) {
-				 this.addEventListener('touchstart', onTouchStart, false);
-			 }
-		 });
-
-		 return this;
+		return this;
 	};
