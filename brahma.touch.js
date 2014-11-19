@@ -65,7 +65,7 @@
 								dY: dy
 							}]);
 						}
-				}
+				};
 				component.trigger('wipe', [{
 					dX: dx,
 					dY: dy
@@ -75,7 +75,7 @@
 		onTouchStart : function(e)
 		{
 			var component = this;
-			
+				
 				this.startX = e.touches[0].pageX;
 				this.startY = e.touches[0].pageY;
 				this.isMoving = true;
@@ -94,12 +94,13 @@
 		
 		
 		this.selector[0].addEventListener('touchstart', function(e) {
-			e.preventDefault();
+			if (component.preventDefaultEvents) e.preventDefault();
 			component.onTouchStart(e);
 		}, false);
 		this.selector[0].addEventListener('touchend', function(e) {
 			component.trigger("throw");
-			e.preventDefault();
+
+			if (component.preventDefaultEvents) e.preventDefault();
 			component.cancelTouch();
 		}, false);
 		
