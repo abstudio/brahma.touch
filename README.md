@@ -6,16 +6,21 @@ Support touch events for dom elements
 ## Usage
 ```javascript
 Brahma('#myelement').component('touch')
-.bind('wipeleft', function() {
+.bind('wipeLeft', function() {
   console.log('Wipe left!');
 })
-.bind('wiperight', function() {
+.bind('wipeRight', function() {
   console.log('Wipe right!');
 })
-.bind('wipeup', function() {
+.bind('wipeUp', function() {
   console.log('Wipe up!');
 })
-.bind('wipedown', function() {
+.bind('wipeDown', function() {
   console.log('Wipe down!');
+})
+.bind('wipe', function(e) {
+  console.log(dX,dY);
+  // dX - distance in X coord
+  // dY - distance in Y coord
 });
 ```
