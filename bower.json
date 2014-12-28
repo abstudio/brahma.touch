@@ -18,7 +18,7 @@
     "wipe"
   ],
   "license": "MIT",
-  "homepage": "https://github.com/morulus/brahma.overlay",
+  "homepage": "https://github.com/morulus/brahma.touch",
   "dependencies": {
     "brahma": ">=1.0.0"
   }
