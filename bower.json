@@ -1,11 +1,11 @@
 {
   "name": "brahma.touch",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "authors": [
     "Morulus <vladimirmorulus@gmail.com>"
   ],
   "description": "Plugin for support touch events",
-  "main": "brahma.touch.js",
+  "main": "dist/brahma.touch.js",
   "moduleType": [
     "amd",
     "globals"
@@ -20,6 +20,6 @@
   "license": "MIT",
   "homepage": "https://github.com/morulus/brahma.touch",
   "dependencies": {
-    "brahma": ">=1.0.0"
+    "brahma": ">=1.3.6"
   }
 }
