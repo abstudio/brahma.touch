@@ -4,11 +4,9 @@ Brahma.application("touch", {
 		minMoveX: 5, // Min X distance to start listen touchmove
 		minMoveY: 5, // Min Y distance to start listen touchmove
 		simpleMoves: false, // Disable listen touchmove after first wipe action
-		preventDefaultEvents: true, // Prevent default events,
-		preventVerticalSwipe: false,
-		freeClick: false,
-		preventDefaultCondition: function() { // Now you can control prevent default by this function
-			return (this.config.preventDefaultEvents);
+		preventDefaults: true, // Prevent default events
+		preventDefaultsFunction: function() { // Now you can control prevent default by this function
+			return (this.config.preventDefaults);
 		}
 	},
 	startX: null,
@@ -73,13 +71,13 @@ Brahma.application("touch", {
 			 		
 					if (component.config.simpleMoves) component.cancelTouch();
 					if(dy >= 0) {
-						component.trigger('swipeDown',[{
+						component.trigger('swipeUp',[{
 							dX: dx,
 							dY: dy
 						}]);
 					}
 					else {
-						component.trigger('swipeUp',[{
+						component.trigger('swipeDown',[{
 							dX: dx,
 							dY: dy
 						}]);
@@ -103,10 +101,8 @@ Brahma.application("touch", {
 			this.isMoving = true;
 
 			this.selector[0].addEventListener('touchmove', function(e) {
-				if(!component.onTouchMove(e) && (component.config.freeClick || component.config.preventVerticalSwipe || component.config.preventDefaultEvents)) {
-					
-					e.preventDefault();
-				 }
+				if (component.config.preventDefaults) e.preventDefault();
+				//e.stopPropagation();
 				component.onTouchMove(e);
 			}, false);
 	}
@@ -117,17 +113,17 @@ Brahma.application("touch", {
 	
 	this.selector[0].addEventListener('touchstart', function(e) {
 		
-		if(component.config.preventDefaultCondition.call(component, e)) {
+		if(component.config.preventDefaultsFunction.call(component, e)) {
 			
-			if (!component.config.freeClick) e.preventDefault();
+			//e.preventDefault();
 		}
 		component.onTouchStart(e);
 	}, false);
 	this.selector[0].addEventListener('touchend', function(e) {
 		component.trigger("throw", [e.target, e]);
 
-		if(component.config.preventDefaultCondition.call(component, e)) {
-			e.preventDefault();
+		if(component.config.preventDefaultsFunction.call(component, e)) {
+			//e.preventDefault();
 		};
 		component.cancelTouch();
 	}, false);
