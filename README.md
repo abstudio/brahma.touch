@@ -5,7 +5,7 @@ Support touch events for dom elements
 
 ## Usage
 ```javascript
-Brahma('#myelement').component('touch')
+Brahma('#myelement').app('touch')
 .bind('wipeLeft', function() {
   console.log('Wipe left!');
 })

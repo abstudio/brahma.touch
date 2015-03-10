@@ -4,7 +4,7 @@
   "authors": [
     "Morulus <vladimirmorulus@gmail.com>"
   ],
-  "description": "Plugin for support touch events",
+  "description": "Support touch events",
   "main": "dist/brahma.touch.js",
   "moduleType": [
     "amd",
